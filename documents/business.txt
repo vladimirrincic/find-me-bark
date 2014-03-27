@@ -1,1 +1,8 @@
 Bark sound on first page load
+- raspitaj se za registraciju pasa u svetu i kod nas (http://www.ksrs.org.rs/, http://www.fci.be/default.aspx)
+- raspitaj se za modele zarade prodajnih sajtova (http://www.limundo.com/)
+
+Model:
+
+Kupac pregledava spisak pasa; Salje upit uzgajivacu; Uzgajivac dobija obavestenje o upitu; Ukoliko prihvati da pregleda upit naplacujemo mu fee koji zavisi od cene psa;
+Ukupan fee po psu ne sme da predje maksimalni mesecni fee (ovo cemo da guramo kao bitnu karakteristiku)...
