@@ -1,6 +1,7 @@
-Bark sound on first page load
+Cute bark sound "find me" on first page load
 - raspitaj se za registraciju pasa u svetu i kod nas (http://www.ksrs.org.rs/, http://www.fci.be/default.aspx)
 - raspitaj se za modele zarade prodajnih sajtova (http://www.limundo.com/)
+- raspitaj se za medjunarodne ugovore  
 
 Model:
 
