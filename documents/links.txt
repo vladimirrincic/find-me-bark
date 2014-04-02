@@ -29,3 +29,8 @@ http://golden.retrievergate.com/silvana-vuckovic-swanavly-kennel-about-breeding-
 frameworks:
 
 http://dropwizard.github.io/dropwizard/getting-started.html
+
+konkurencija:
+
+http://www.breeders.net/
+http://www.puppyfind.com/
