@@ -14,24 +14,34 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author mixa
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @Table(name = "address")
 public class Address implements Serializable {
     
-
+    private static final long serialVersionUID = -8248161531491173164L;
+    
+    @XmlElement
     private Long id;
     
+    @XmlElement
     private String country;
+    @XmlElement
     private String city;
     
-    private Breeder breeder;
+    @XmlTransient
+    private User breeder;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,13 +72,13 @@ public class Address implements Serializable {
         this.city = city;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BREEDER_ID", nullable = false)    
-    public Breeder getBreeder() {
+    public User getBreeder() {
         return breeder;
     }
 
-    public void setBreeder(Breeder breeder) {
+    public void setBreeder(User breeder) {
         this.breeder = breeder;
     }
     

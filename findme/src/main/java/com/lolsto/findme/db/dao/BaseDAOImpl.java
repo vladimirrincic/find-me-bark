@@ -5,62 +5,68 @@
 package com.lolsto.findme.db.dao;
 
 
+import com.lolsto.findme.common.PaginationVO;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.Resources;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author mixa
  */
+@Repository
 public class BaseDAOImpl implements BaseDAO {
 
-    public HibernateTemplate hibernateTemplate;
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    protected final Session getSession() {
+            return sessionFactory.getCurrentSession();
+    }
 
     @SuppressWarnings ( "unchecked" )
+    @Override
     public <T extends Object> T get ( Class<T> entityClass, Serializable id )
     {
-            return ( T ) hibernateTemplate.get( entityClass , id );
+            return ( T ) getSession().get( entityClass , id );
     }
 
     @SuppressWarnings ( "unchecked" )
+    @Override
     public <T extends Object> T load ( Class<T> entityClass, Serializable id )
     {
-            return ( T ) hibernateTemplate.load( entityClass , id );
+            return ( T ) getSession().load( entityClass , id );
     }
 
-    @SuppressWarnings ( "unchecked" )
-    public <T extends Object> List<T> loadAll ( Class<T> entityClass )
-    {
-            return ( List<T> ) hibernateTemplate.loadAll( entityClass );
-    }    
     
-    public HibernateTemplate getHibernateTemplate() {
-        return hibernateTemplate;
-    }
-
-    public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-        this.hibernateTemplate = hibernateTemplate;
-    }
-
-    public Session getCurrentSession() {
-        return hibernateTemplate.getSessionFactory().getCurrentSession();
-    }
-
-    public Session openSession() {
-        return hibernateTemplate.getSessionFactory().openSession();
-    }
-
-    public Session getCurrentOrNewSession() {
-        Session session = null;
-        try {
-            session = getCurrentSession();
-
-        } catch (Exception e) {
-            // No current session. Hence open new session.
-            session = openSession();
+    protected void addPagination(Criteria c, PaginationVO paginationVO) {
+        if (paginationVO != null) {
+            Integer pageNo = paginationVO.getPageNo();
+            Integer resultsPerPage = paginationVO.getResultsPerPage();
+            
+            if (pageNo != null && pageNo > 0 && resultsPerPage != null && resultsPerPage > 0) {
+                c.setFirstResult(resultsPerPage * pageNo - 1);
+                c.setMaxResults(resultsPerPage);
+            }
+            
+            String sortOrder = paginationVO.getSortOrder();
+            String sortType = paginationVO.getSortType();
+            
+            if (StringUtils.isNotBlank(sortOrder) && StringUtils.isNotBlank(sortType)) {
+                if (sortOrder.equalsIgnoreCase("desc")) {
+                    c.addOrder(Order.desc(sortType));
+                } else {
+                    c.addOrder(Order.asc(sortType));
+                }
+            }
         }
-        return session;
     }
 }

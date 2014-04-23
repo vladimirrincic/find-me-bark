@@ -22,17 +22,25 @@ import javax.persistence.Table;
  * @author mixa
  */
 @Entity
-@Table(name = "connection")
+@Table(name = "connections")
 public class Connection implements Serializable {
+    
+    private static final long serialVersionUID = 3227841750423879317L;
+    
     
     private Long id;
     
     private String status;
     
+    private byte buyerRate;
+    private String buyerReview;
+    
     private Dog dog;
-    private Breeder breeder;
-    private Guest user;
+    private User breeder;
+    private User buyer;
 
+    
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", unique = true, nullable = false)    
@@ -65,23 +73,23 @@ public class Connection implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "BREEDER_ID", nullable = false) 
-    public Breeder getBreeder() {
+    public User getBreeder() {
         return breeder;
     }
 
-    public void setBreeder(Breeder breeder) {
+    public void setBreeder(User breeder) {
         this.breeder = breeder;
     }
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID", nullable = false)    
-    public Guest getUser() {
-        return user;
+    @JoinColumn(name = "BUYER_ID", nullable = false)    
+    public User getBuyer() {
+        return buyer;
     }
 
-    public void setUser(Guest user) {
-        this.user = user;
+    public void setBuyer(User buyer) {
+        this.buyer = buyer;
     }
-    
+
     
 }

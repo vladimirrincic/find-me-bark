@@ -20,28 +20,49 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.annotations.Type;
 
 /**
  *
  * @author mixa
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
-@Table(name = "dog")
+@Table(name = "dogs")
 public class Dog implements Serializable {
+    
+    private static final long serialVersionUID = 944243338679365729L;
 
+    @XmlElement
     private Long id;
     
+    @XmlElement
+    private String status;
+    @XmlElement
     private String breed;
+    
+    @XmlElement
     private String name;
+    @XmlElement
     private String gender; 
+    @XmlElement
     private Date dob;
+    @XmlElement
     private Boolean forSale;
+    @XmlElement
     private String description;
     
+    @XmlTransient
     private Dog father;
+    @XmlTransient
     private Dog mohter;
     
-    private Breeder breeder;
+    @XmlElement
+    private User breeder;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,6 +75,15 @@ public class Dog implements Serializable {
         this.id = id;
     }
 
+    @Column(name = "STATUS", nullable = false, length = 16)    
+    public String getStatus() {
+        return status;
+    }    
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
     @Column(name = "BREAD", nullable = false, length = 128)    
     public String getBreed() {
         return breed;
@@ -91,7 +121,7 @@ public class Dog implements Serializable {
         this.dob = dob;
     }
 
-    @Column(name = "FOR_SALE", nullable = false)     
+    @Column(name = "FOR_SALE", nullable = false, columnDefinition = "BIT", length = 1)     
     public Boolean isForSale() {
         return forSale;
     }
@@ -100,6 +130,7 @@ public class Dog implements Serializable {
         this.forSale = forSale;
     }
 
+    @Type(type="text")
     @Column(name = "DESCRIPTION", length = 256)      
     public String getDescription() {
         return description;
@@ -119,7 +150,7 @@ public class Dog implements Serializable {
         this.father = father;
     }
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="MOTHER_ID")    
     public Dog getMohter() {
         return mohter;
@@ -129,13 +160,13 @@ public class Dog implements Serializable {
         this.mohter = mohter;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "BREEDER_ID", nullable = false) 
-    public Breeder getBreeder() {
+    public User getBreeder() {
         return breeder;
     }
 
-    public void setBreeder(Breeder breeder) {
+    public void setBreeder(User breeder) {
         this.breeder = breeder;
     }
         

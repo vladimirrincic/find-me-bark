@@ -2,8 +2,15 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+        xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation=
+        "http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans.xsd 
+        http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 	
+    
+    
+    
         <import resource="dataAccessContext.xml"/>
         
         <import resource="classpath:META-INF/cxf/cxf.xml" />
@@ -12,27 +19,14 @@
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 	
-	<bean id="baseDAO" class="com.lolsto.findme.db.dao.BaseDAOImpl" >
-            <property name="hibernateTemplate" ref="hibernateTemplate" />
-        </bean>   
-<!--	<bean id="matchDAO" class="org.test.MatchDAOImpl" >
-            <property name="hibernateTemplate" ref="hibernateTemplate" />          
-        </bean>   
+        <context:component-scan base-package="com.lolsto.findme"/>        
         
-	<bean id="matchBO" class="org.test.MatchBOImpl" >
-            <property name="matchDAO" ref="matchDAO" />
-        </bean>        -->
-        
-	<!-- Ovo je klasa u kojoj CXF trazi metode koji se izlazu kao veb servisi -->
-	<bean id="sampleserviceclass" class="com.lolsto.findme.service.SampleService" >
-            <property name="baseDAO" ref="baseDAO" />
-        </bean>
-	
+
 <!--	 Ovo definise rest server -->
-	<jaxrs:server id="sampleservice" address="/sampleservice">
+	<jaxrs:server id="findmeContainer" address="/">
 		 <!--Rest servisu kazes u kojoj klasi su metodi--> 
 		<jaxrs:serviceBeans>
-			<ref bean="sampleserviceclass" />
+			<ref bean="dogService" />
 		</jaxrs:serviceBeans>
 		<jaxrs:providers>
 			<ref bean="jsonProviderJacksonJaxb" />
